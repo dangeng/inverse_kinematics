@@ -6,16 +6,20 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 from models import InvKin
 
-B = 512         # Batch size
+B = 2048            # Batch size
+device = 'cpu'      # Device
+niter = 1000        # Number of training steps
 
 # Make model, loss, and optimizer
 model = InvKin()
-optimizer = Adam(model.parameters(), lr=1e-1)
+model = model.to(device)
+optimizer = Adam(model.parameters(), lr=1e-4)
 
 losses = []
-for iter in tqdm(range(100)):
+for iter in tqdm(range(niter)):
     # Sample random point in "roughly" reachable space: [-.25, .25]**3
     xs = torch.rand((B, 3)) * .25 - .125
+    xs = xs.to(device)
 
     # Forward through model
     thetas, pred_x = model(xs)
@@ -35,5 +39,7 @@ for iter in tqdm(range(100)):
 # Save model
 torch.save(model.state_dict(), 'chkpt.pth')
 
+# Save loss plot
 plt.plot(losses)
+plt.savefig('losses.png')
 plt.show()

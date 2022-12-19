@@ -61,7 +61,7 @@ def sanity_check(model, N=16, save_path=None):
 
 def random_test(model, N=16, save_path=None):
     '''
-    Sample random locations
+    Sample random locations, and plot predictions
     '''
     with torch.no_grad():
         # Sample random point in "roughly" reachable space: [-.25, .25]**3
@@ -75,10 +75,15 @@ def random_test(model, N=16, save_path=None):
 
     plot_joint_locs(joint_locs, target_locs=xs, save_path=save_path)
 
+# Make model
 model = InvKin()
-chkpt = torch.load('chkpt_10k_lr1e-4.pth')
+
+# Load checkpoint
+chkpt = torch.load('chkpt.pth')
 model.load_state_dict(chkpt)
 model = model.eval()
+
+# Run visualization
 #sanity_check(model)
-random_test(model, N=3)
+random_test(model)
 
