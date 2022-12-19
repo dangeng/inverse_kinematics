@@ -13,10 +13,13 @@ class InvKin(nn.Module):
 
         self.net = nn.Sequential(
                         nn.Linear(3, hidden_dim),
+                        nn.BatchNorm1d(hidden_dim),
                         nn.ReLU(),
                         nn.Linear(hidden_dim, hidden_dim),
+                        nn.BatchNorm1d(hidden_dim),
                         nn.ReLU(),
                         nn.Linear(hidden_dim, hidden_dim),
+                        nn.BatchNorm1d(hidden_dim),
                         nn.ReLU(),
                         nn.Linear(hidden_dim, n_theta)
                    )
